@@ -31,6 +31,9 @@
 #ifndef GOOGLE_PROTOBUF_VERSIONS_H__
 #define GOOGLE_PROTOBUF_VERSIONS_H__
 
+#include "absl/strings/string_view.h"
+#include "google/protobuf/compiler/plugin.pb.h"
+
 // Defines compiler version strings for Protobuf code generators.
 //
 // When they are suffixed with "-dev", they reflect the version of the next
@@ -51,4 +54,19 @@
 #define PROTOBUF_JAVA_VERSION_STRING "3.26.0-dev"
 #define PROTOBUF_PYTHON_VERSION_STRING "4.26.0-dev"
 
+namespace google {
+namespace protobuf {
+namespace compiler {
+namespace internal {
+// For internal use to parse the Protobuf language version strings.
+const Version* ParseProtobufVersion(absl::string_view version);
+}  // namespace internal
+
+// Gets the version message according to the version strings defined above.
+const Version& GetProtobufCPPVersion();
+const Version& GetProtobufJavaVersion();
+const Version& GetProtobufPythonVersion();
+}  // namespace compiler
+}  // namespace protobuf
+}  // namespace google
 #endif  // GOOGLE_PROTOBUF_VERSIONS_H__
