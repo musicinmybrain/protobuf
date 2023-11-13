@@ -1872,10 +1872,8 @@ void MessageGenerator::GenerateClassDefinition(io::Printer* p) {
               ::$proto_ns$::internal::ConstantInitialized);
 
           inline $classname$(const $classname$& from) : $classname$(nullptr, from) {}
-          $classname$($classname$&& from) noexcept : $classname$() {
-            *this = ::std::move(from);
-          }
-
+          inline $classname$($classname$&& from) noexcept
+              : $classname$(nullptr, std::forward<$classname$>(from)) {}
           inline $classname$& operator=(const $classname$& from) {
             CopyFrom(from);
             return *this;
@@ -1960,6 +1958,10 @@ void MessageGenerator::GenerateClassDefinition(io::Printer* p) {
          protected:
           explicit $classname$(::$proto_ns$::Arena* arena);
           $classname$(::$proto_ns$::Arena* arena, const $classname$& from);
+          $classname$(::$proto_ns$::Arena* arena, $classname$&& from) noexcept
+              : $classname$(arena) {
+            *this = ::std::move(from);
+          }
           $arena_dtor$;
           $get_class_data$;
 
